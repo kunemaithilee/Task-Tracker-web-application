@@ -1,14 +1,15 @@
 import { FiClock, FiAlertCircle, FiCheckCircle } from 'react-icons/fi';
 
-const DueDateBanner = ({ tasks }) => {
+const DueDateBanner = ({ tasks = [] }) => {
+  const safe = tasks || [];
   const now = new Date();
-  const overdue = tasks.filter((t) => new Date(t.dueDate) < now && t.status !== 'Completed');
-  const dueSoon = tasks.filter((t) => {
+  const overdue = safe.filter((t) => new Date(t.dueDate) < now && t.status !== 'Completed');
+  const dueSoon = safe.filter((t) => {
     const due = new Date(t.dueDate);
     const diff = Math.ceil((due - now) / (1000 * 60 * 60 * 24));
     return diff >= 0 && diff <= 2 && t.status !== 'Completed';
   });
-  const completedToday = tasks.filter((t) => {
+  const completedToday = safe.filter((t) => {
     const today = new Date().toDateString();
     return t.status === 'Completed' && new Date(t.updatedAt).toDateString() === today;
   });

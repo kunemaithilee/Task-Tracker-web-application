@@ -35,20 +35,21 @@ const FilterBar = ({
   onSortChange,
   tasks = [],
 }) => {
-  const countByStatus = (status) => tasks.filter((t) => t.status === status).length;
-  const countByPriority = (priority) => tasks.filter((t) => t.priority === priority).length;
+  const safe = tasks || [];
+  const countByStatus = (status) => safe.filter((t) => t.status === status).length;
+  const countByPriority = (priority) => safe.filter((t) => t.priority === priority).length;
 
   return (
     <div className="flex flex-wrap items-center gap-2">
       <FilterSelect icon={FiFilter} value={statusFilter} onChange={onStatusChange}>
-        <option value="">All Status ({tasks.length})</option>
+        <option value="">All Status ({safe.length})</option>
         {STATUS_OPTIONS.map((s) => (
           <option key={s} value={s}>{s} ({countByStatus(s)})</option>
         ))}
       </FilterSelect>
 
       <FilterSelect icon={FiFilter} value={priorityFilter} onChange={onPriorityChange}>
-        <option value="">All Priority ({tasks.length})</option>
+        <option value="">All Priority ({safe.length})</option>
         {PRIORITY_OPTIONS.map((p) => (
           <option key={p} value={p}>{p} ({countByPriority(p)})</option>
         ))}

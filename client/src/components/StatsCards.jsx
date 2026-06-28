@@ -20,11 +20,12 @@ const StatCard = ({ icon: Icon, label, value, gradient, delay }) => (
   </div>
 );
 
-const StatsCards = ({ tasks }) => {
-  const total = tasks.length;
-  const pending = tasks.filter((t) => t.status === 'Pending').length;
-  const inProgress = tasks.filter((t) => t.status === 'In Progress').length;
-  const completed = tasks.filter((t) => t.status === 'Completed').length;
+const StatsCards = ({ tasks = [] }) => {
+  const safe = tasks || [];
+  const total = safe.length;
+  const pending = safe.filter((t) => t.status === 'Pending').length;
+  const inProgress = safe.filter((t) => t.status === 'In Progress').length;
+  const completed = safe.filter((t) => t.status === 'Completed').length;
 
   const stats = [
     { icon: FiClipboard, label: 'Total Tasks', value: total, gradient: 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/20', delay: 'stagger-1' },
