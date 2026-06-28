@@ -32,14 +32,22 @@ export const TaskProvider = ({ children }) => {
     }
   }, [search, statusFilter, priorityFilter, sort]);
 
+  const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
+
   const addTask = async (taskData) => {
-    const response = await taskService.createTask(taskData);
+    const [response] = await Promise.all([
+      taskService.createTask(taskData),
+      delay(),
+    ]);
     setTasks((prev) => [response.data, ...prev]);
     return response;
   };
 
   const editTask = async (id, taskData) => {
-    const response = await taskService.updateTask(id, taskData);
+    const [response] = await Promise.all([
+      taskService.updateTask(id, taskData),
+      delay(),
+    ]);
     setTasks((prev) =>
       prev.map((task) => (task._id === id ? response.data : task))
     );
@@ -47,7 +55,7 @@ export const TaskProvider = ({ children }) => {
   };
 
   const removeTask = async (id) => {
-    await taskService.deleteTask(id);
+    await Promise.all([taskService.deleteTask(id), delay()]);
     setTasks((prev) => prev.filter((task) => task._id !== id));
   };
 
